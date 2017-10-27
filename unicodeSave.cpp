@@ -7,9 +7,22 @@
 
 using namespace std;
 
-void binToHex(string s)
+string binToHex(string s)
 {
+	int sum = 0;
+	int four = 0;
 	string num;
+
+	for (int i = s.length()/4; i > 0; i--)
+	{
+		if (s[four] == '1')
+			sum += 8;
+		if (s[four + 1] == '1')
+			sum += 4;
+		if (s[four + 2] == '1')
+			sum += 2;
+		if (s[four + 3] == '1')
+			sum += 1;
 		switch (sum)
 		{
 		case 0:
@@ -63,6 +76,10 @@ void binToHex(string s)
 		default:
 			cout << "Didn't Work!" << endl;
 		}
+		four = four + 4;
+		sum = 0;
+	}
+	return num;
 }
 
 void getHex(queue<bitset<8>> fLetters, queue<int> bNum, int size, queue<char> &hex)
@@ -232,10 +249,16 @@ void getbNum(queue <bitset<8>> letters, queue<int> &num, int size)
 
 void getCodePoint(queue<bitset<8>> fLetters, queue<int> bNum, int size)
 {
+	string first;
+	string second;
+	string third;
+	string fourth;
+	string ans;
 	queue<char> hex;
 	int count = 1;
+	int rSize = bNum.size() + 0;
 	getHex(fLetters, bNum, size, hex);
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < rSize; i++)
 	{
 		if (bNum.front() == 1)
 		{
@@ -262,14 +285,42 @@ void getCodePoint(queue<bitset<8>> fLetters, queue<int> bNum, int size)
 		}
 		else if (bNum.front() == 3)
 		{
-			string first = fLetters.front().to_string();
+			first = fLetters.front().to_string();
 			fLetters.pop();
-			string second = fLetters.front().to_string();
+			second = fLetters.front().to_string();
+			fLetters.pop();
+			third = fLetters.front().to_string();
 			fLetters.pop();
 			first = first.substr(4, 8);
-			second = "00" + second.substr(2, 8);
-			binToHex(first);
-			binToHex(second);
+			second = second.substr(2, 8);
+			third = third.substr(2, 8);
+
+			string binFull = first + second + third;
+			ans = binToHex(binFull);
+			cout << "Code Point for Character #" << count << ": " << "U+" << ans << endl;
+			count++;
+			bNum.pop();
+		}
+		else if (bNum.front() == 4)
+		{
+			first = fLetters.front().to_string();
+			fLetters.pop();
+			second = fLetters.front().to_string();
+			fLetters.pop();
+			third = fLetters.front().to_string();
+			fLetters.pop();
+			fourth = fLetters.front().to_string();
+			fLetters.pop();
+			first = first.substr(6, 8);
+			second = second.substr(2, 8);
+			third = third.substr(2, 8);
+			fourth = fourth.substr(2, 8);
+
+			string binFull = first + second + third + fourth;
+			ans = binToHex(binFull);
+			cout << "Code Point for Character #" << count << ": " << "U+" << ans << endl;
+			count++;
+			bNum.pop();
 		}
 		else
 			break;
@@ -305,5 +356,6 @@ int main()
 
 	system("pause");
 }
+
 
 
