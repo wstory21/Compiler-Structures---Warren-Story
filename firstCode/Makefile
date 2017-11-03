@@ -1,9 +1,9 @@
 CXXFLAGS=-std=gnu++11
 all : firstCode
 
-lex.yy.cpp : firstCode.l
-	flex -o lex.yy.cpp firstCode.l
-	sed -i- -e 's/register //g' lex.yy.cpp
-
-
-	bison lex.yy.cpp
+lex.yy.c : firstCode.l
+	flex firstCode.l
+	
+firstCode.tab.h firstCode.tab.c : firstCode.y
+	bison -d -o firstCode.tab.c firstCode.y
+	gcc firstCode.tab.c lex.yy.c -lm -o calculator
