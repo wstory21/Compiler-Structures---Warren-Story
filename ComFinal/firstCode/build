@@ -1,0 +1,5 @@
+#!/bin/bash
+rm firstCode.tab.c firstCode.tab.h lex.yy.c run.exe
+bison -d firstCode.y
+flex firstCode.l
+gcc firstCode.tab.c lex.yy.c -lm -o run
