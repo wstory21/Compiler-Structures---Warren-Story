@@ -40,7 +40,9 @@
    enum yytokentype {
      VARIABLE = 258,
      NUMBER = 259,
-     lBinding = 260
+     lBinding = 260,
+     word = 261,
+     print = 262
    };
 #endif
 
@@ -51,15 +53,16 @@ typedef union YYSTYPE
 {
 
 /* Line 1685 of yacc.c  */
-#line 27 "firstCode.y"
+#line 36 "firstCode.y"
 
-    double num;     
+    char *sval;
+    double num;
     int index;      
 
 
 
 /* Line 1685 of yacc.c  */
-#line 63 "firstCode.tab.h"
+#line 66 "firstCode.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
