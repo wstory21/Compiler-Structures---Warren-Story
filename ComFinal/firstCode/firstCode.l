@@ -3,13 +3,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include "firstCode.tab.h"
- 
+
 #define TABSIZE 1000
  
 char* var_names[TABSIZE];         
 int n_of_names = 0;          
 
-int install(char *txt)
+int add(char *txt)
 {
     int j; char *s;
      
@@ -31,12 +31,13 @@ int install(char *txt)
     ++n_of_names;
     return j;
 }
- 
+
 %}
  
-ALPHA   [a-z]|[a-z][a-z]
+ALPHA   [a-z]|[A-Z][a-z]
 NUM     [0-9]|[0-9][0-9]
 LET	[l][e][t][ ]
+PRINT	[p][r][i][n][t][ ]
 
 %%
  
@@ -46,13 +47,24 @@ LET	[l][e][t][ ]
     yylval.num = atof(yytext);
     return NUMBER;
 }
- 
-{ALPHA}+{NUM}*    {
-    yylval.index = install(yytext);
+
+{ALPHA}+{NUM}*		{
+    yylval.index = add(yytext);
     return VARIABLE;
 }
+
+[a-zA-Z0-9]+	{
+    yylval.sval = yytext;
+    return word;
+}
+
+{PRINT} {
+    yylval.sval = yytext;
+    return print;
+}
+
 {LET}			{
-    yylval.index = install(yytext);
+    yylval.index = add(yytext);
     return lBinding;
 }
 .                       {
